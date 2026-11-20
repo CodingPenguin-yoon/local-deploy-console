@@ -2,18 +2,29 @@
 
 팀당 교육장 PC 한 대에서 실행하는 로컬 배포 콘솔입니다. 기존 Git 인증과 kubeconfig/AWS 프로필을 사용합니다. Argo CD 서버 또는 클러스터 컨트롤러를 설치하지 않으며 네트워크·권한 제한을 우회하지 않습니다.
 
-## 실행
+## 부트스트랩
 
-Python 3.10+, Git, Helm, kubectl과 kubeconfig가 사용하는 인증 도구(AWS CLI 등)가 필요합니다.
+macOS에서 [Homebrew](https://brew.sh/)가 설치되어 있다면 다음 명령으로 필수 도구를 준비합니다. 이미 Python 3.10 이상, Git, Helm, kubectl이 있다면 바로 아래의 저장소 복제 단계부터 시작하세요.
 
 ```sh
+brew install python git helm kubernetes-cli
+```
+
+새로 설치할 디렉터리의 상위 폴더에서 실행합니다.
+
+```sh
+git clone https://github.com/CodingPenguin-yoon/local-deploy-console.git
 cd local-deploy-console
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
+.venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python app.py
 ```
 
-http://127.0.0.1:8765 를 엽니다. `PORT` 환경 변수로 포트를 바꿀 수 있습니다. 현재 구현은 호스트 인증을 직접 사용하는 방식이며 Docker 패키징은 제공하지 않습니다.
+브라우저에서 [로컬 배포 콘솔](http://127.0.0.1:8765)을 엽니다. 이미 포트를 사용 중이면 `PORT=8766 .venv/bin/python app.py`로 실행하고 브라우저에서도 같은 포트를 사용하세요.
+
+워크로드를 등록하려면 이 PC에서 배포 저장소를 읽을 수 있는 Git 인증과 대상 클러스터에 접근할 수 있는 kubeconfig가 필요합니다. kubeconfig가 AWS CLI 등 외부 인증 도구를 사용한다면 해당 도구도 준비하세요.
+
+`Ctrl+C`로 콘솔을 종료하면 폴링도 멈춥니다. 다음부터는 저장소 폴더에서 `.venv/bin/python app.py`만 실행하면 됩니다. 재시작 후에는 원하는 카드에서 자동 배포를 다시 켜세요.
 
 ## 등록 순서
 
