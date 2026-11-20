@@ -15,7 +15,7 @@ import yaml
 import charts
 
 ROOT = Path(__file__).resolve().parent
-STATE = ROOT / '.state'
+STATE = Path(os.environ.get('LOCAL_DEPLOY_CONSOLE_STATE_DIR', ROOT / '.state')).expanduser()
 LOCK = threading.RLock()
 TOKEN = secrets.token_urlsafe(32)
 DATA = {'targets': [], 'history': []}

@@ -2,7 +2,18 @@
 
 팀당 교육장 PC 한 대에서 실행하는 로컬 배포 콘솔입니다. 기존 Git 인증과 kubeconfig/AWS 프로필을 사용합니다. Argo CD 서버 또는 클러스터 컨트롤러를 설치하지 않으며 네트워크·권한 제한을 우회하지 않습니다.
 
-## 부트스트랩
+## Homebrew로 설치 (macOS)
+
+```sh
+brew install codingpenguin-yoon/tap/local-deploy-console
+local-deploy-console
+```
+
+[로컬 콘솔](http://127.0.0.1:8765)을 열고 아래 등록 순서를 따르세요. 각 팀의 PC에 배포 저장소용 Git 인증과 해당 클러스터의 kubeconfig가 필요합니다. kubeconfig가 AWS CLI 같은 인증 도구를 호출하면 그 도구도 설치하세요. 처음에는 자동 배포가 꺼져 있어 등록 후 현재 이미지와 목표 이미지를 먼저 확인할 수 있습니다.
+
+Homebrew 설치본은 설정과 배포 이력을 `~/.local/share/local-deploy-console/`에 저장합니다. 업데이트하려면 `brew update`와 `brew upgrade codingpenguin-yoon/tap/local-deploy-console`을 실행한 뒤 콘솔을 다시 시작하세요.
+
+## 소스에서 부트스트랩
 
 macOS에서 [Homebrew](https://brew.sh/)가 설치되어 있다면 다음 명령으로 필수 도구를 준비합니다. 이미 Python 3.10 이상, Git, Helm, kubectl이 있다면 바로 아래의 저장소 복제 단계부터 시작하세요.
 
@@ -58,7 +69,7 @@ python3 -m venv .venv
 
 Git은 기존 credential helper, kubectl은 기존 kubeconfig의 exec 인증을 사용합니다. context 이름 자체가 권한이 아니며 서버 RBAC가 접근 범위를 결정합니다. 앱은 팀 고정 제품이 아니므로 등록 시 올바른 context/namespace를 확인해야 합니다. 다른 클러스터 인증이 PC에 있으면 해당 context도 사용할 수 있습니다.
 
-설정·최근 배포 이력 100건·bare Git 캐시는 `.state/`에 저장되며 Git에서 제외됩니다. 토큰 포함 저장소 URL은 받지 않습니다. 웹은 IPv4 loopback 전용이며 Host 검사와 요청 토큰을 사용합니다. 외부에 공개하지 마세요. 로그 자체는 애플리케이션이 출력한 내용이므로 사용자의 앱에서도 비밀값을 로그에 기록하지 않아야 합니다.
+설정·최근 배포 이력 100건·bare Git 캐시는 소스 실행 시 `.state/`에 저장되며 Git에서 제외됩니다. 토큰 포함 저장소 URL은 받지 않습니다. 웹은 IPv4 loopback 전용이며 Host 검사와 요청 토큰을 사용합니다. 외부에 공개하지 마세요. 로그 자체는 애플리케이션이 출력한 내용이므로 사용자의 앱에서도 비밀값을 로그에 기록하지 않아야 합니다.
 
 기존 Argo CD나 다른 자동 배포 도구가 같은 리소스를 관리하지 않는 상태에서 사용하세요. 운영자가 허용한 로컬 배포 범위에서 사용합니다.
 
