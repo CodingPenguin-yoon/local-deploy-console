@@ -40,7 +40,7 @@ def run(args, timeout=60):
 
 
 def save():
-    STATE.mkdir(mode=0o700, exist_ok=True)
+    STATE.mkdir(mode=0o700, parents=True, exist_ok=True)
     path = STATE / 'state.json'
     tmp = path.with_suffix('.tmp')
     tmp.write_text(json.dumps(DATA, ensure_ascii=False, indent=2))
@@ -303,7 +303,7 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == '__main__':
-    STATE.mkdir(mode=0o700, exist_ok=True)
+    STATE.mkdir(mode=0o700, parents=True, exist_ok=True)
     if (STATE / 'state.json').exists():
         DATA = json.loads((STATE / 'state.json').read_text())
         # Never resume unattended deployments just because the app restarted.
